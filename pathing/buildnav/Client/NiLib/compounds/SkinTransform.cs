@@ -1,16 +1,19 @@
-﻿using System.IO;
-using OpenTK;
+﻿using OpenTK;
+using System.IO;
 
-namespace MNL {
-  public class SkinTransform {
-    public Matrix4 Rotation;
-    public Vector3 Translation;
-    public float Scale;
+namespace MNL
+{
+    public class SkinTransform
+    {
+        public Matrix4 Rotation;
+        public Vector3 Translation;
+        public float Scale;
 
-    public SkinTransform(NiFile file, BinaryReader reader) {
-      Rotation = reader.ReadMatrix33();
-      Translation = reader.ReadVector3();
-      Scale = reader.ReadSingle();
+        public SkinTransform(NiFile file, BinaryReader reader)
+        {
+            Rotation = reader.ReadMatrix33();
+            Translation = reader.ReadVector3();
+            Scale = reader.ReadSingle();
+        }
     }
-  }
 }

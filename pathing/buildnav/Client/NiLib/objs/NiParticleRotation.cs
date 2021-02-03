@@ -1,17 +1,20 @@
-﻿using System.IO;
-using OpenTK;
+﻿using OpenTK;
+using System.IO;
 
-namespace MNL {
-  public class NiParticleRotation : NiParticleModifier {
-    public bool RandomInitalAxis;
-    public Vector3 InitialAxis;
-    public float Speed;
+namespace MNL
+{
+    public class NiParticleRotation : NiParticleModifier
+    {
+        public bool RandomInitalAxis;
+        public Vector3 InitialAxis;
+        public float Speed;
 
-    public NiParticleRotation(NiFile file, BinaryReader reader)
-        : base(file, reader) {
-      RandomInitalAxis = reader.ReadBoolean();
-      InitialAxis = reader.ReadVector3();
-      Speed = reader.ReadSingle();
+        public NiParticleRotation(NiFile file, BinaryReader reader)
+            : base(file, reader)
+        {
+            RandomInitalAxis = reader.ReadBoolean();
+            InitialAxis = reader.ReadVector3();
+            Speed = reader.ReadSingle();
+        }
     }
-  }
 }

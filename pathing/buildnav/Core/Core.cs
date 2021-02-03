@@ -17,6 +17,7 @@
     along with this engine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+using CEM.Utils;
 using System;
 using System.Globalization;
 using System.IO;
@@ -24,50 +25,54 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using CEM.Utils;
 
-namespace CEM.Core {
-  /// <summary>
-  /// Core
-  /// </summary>
-  internal static class Core {
-    private const string ROOT_DIR = "base";
-
+namespace CEM.Core
+{
     /// <summary>
-    /// Initialises the core
+    /// Core
     /// </summary>
-    public static void Init() {
-      // Set working dir
-      Environment.CurrentDirectory = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), ROOT_DIR);
-      //Win32.SetDllDirectory(IntPtr.Size == 8 ? "x64" : "x86");
-      AppDomain.CurrentDomain.AssemblyResolve += (o, rargs) => {
-        Assembly loaded = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == rargs.Name);
-        if (loaded != null)
-          return loaded;
-        string file = new AssemblyName(rargs.Name).Name + ".dll";
-        file = Path.GetFullPath(Path.Combine("lib", file));
-        return File.Exists(file) ? Assembly.LoadFile(file) : null;
-      };
+    internal static class Core
+    {
+        private const string ROOT_DIR = "base";
 
-      // Handle Exceptions
+        /// <summary>
+        /// Initialises the core
+        /// </summary>
+        public static void Init()
+        {
+            // Set working dir
+            Environment.CurrentDirectory = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), ROOT_DIR);
+            //Win32.SetDllDirectory(IntPtr.Size == 8 ? "x64" : "x86");
+            AppDomain.CurrentDomain.AssemblyResolve += (o, rargs) =>
+            {
+                Assembly loaded = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == rargs.Name);
+                if (loaded != null)
+                    return loaded;
+                string file = new AssemblyName(rargs.Name).Name + ".dll";
+                file = Path.GetFullPath(Path.Combine("lib", file));
+                return File.Exists(file) ? Assembly.LoadFile(file) : null;
+            };
+
+            // Handle Exceptions
 #if !DEBUG
       AppDomain.CurrentDomain.UnhandledException += UnhandledException;
 #endif
 
-      // Setup culture
-      var i = (CultureInfo) CultureInfo.InvariantCulture.Clone();
-      i.NumberFormat.NumberGroupSeparator = " ";
-      i.NumberFormat.NumberDecimalSeparator = ".";
-      Thread.CurrentThread.CurrentCulture = i;
+            // Setup culture
+            var i = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            i.NumberFormat.NumberGroupSeparator = " ";
+            i.NumberFormat.NumberDecimalSeparator = ".";
+            Thread.CurrentThread.CurrentCulture = i;
 
-      // Init subsystems
-      CLI.Init();
-      CVars.Init();
-    }
+            // Init subsystems
+            CLI.Init();
+            CVars.Init();
+        }
 
-    private static void UnhandledException(object sender, UnhandledExceptionEventArgs args) {
-      Log.Fatal("Unhandled Exception: \r\n\r\n" + args.ExceptionObject);
-      Log.Flush();
+        private static void UnhandledException(object sender, UnhandledExceptionEventArgs args)
+        {
+            Log.Fatal("Unhandled Exception: \r\n\r\n" + args.ExceptionObject);
+            Log.Flush();
+        }
     }
-  }
 }

@@ -20,63 +20,70 @@
 using System;
 using System.Drawing;
 
-namespace CEM.Core {
-  /// <summary>
-  /// Holds a single command
-  /// </summary>
-  internal abstract class Command {
+namespace CEM.Core
+{
     /// <summary>
-    /// Processes the entered args
+    /// Holds a single command
     /// </summary>
-    /// <param name="args"></param>
-    public abstract int OnCommand(string[] args);
+    internal abstract class Command
+    {
+        /// <summary>
+        /// Processes the entered args
+        /// </summary>
+        /// <param name="args"></param>
+        public abstract int OnCommand(string[] args);
 
-    /// <summary>
-    /// => Console.LogLine()
-    /// </summary>
-    /// <param name="c">Color</param>
-    /// <param name="line">Line</param>
-    protected static int Log(Color c, string line) {
-      CLI.LogLine(c, line);
-      return 0;
+        /// <summary>
+        /// => Console.LogLine()
+        /// </summary>
+        /// <param name="c">Color</param>
+        /// <param name="line">Line</param>
+        protected static int Log(Color c, string line)
+        {
+            CLI.LogLine(c, line);
+            return 0;
+        }
+
+        /// <summary>
+        /// => Console.LogLine()
+        /// </summary>
+        /// <param name="line">Line</param>
+        protected static int Log(string line)
+        {
+            CLI.LogLine(Color.LightGray, line);
+            return 0;
+        }
+
+        /// <summary>
+        /// Logs an error
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        protected static int Error(string line)
+        {
+            return Log(Color.Red, line);
+        }
     }
 
     /// <summary>
-    /// => Console.LogLine()
+    /// The attribute for the commandhandler
+    /// used for recognition of the command
     /// </summary>
-    /// <param name="line">Line</param>
-    protected static int Log(string line) {
-      CLI.LogLine(Color.LightGray, line);
-      return 0;
-    }
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class CmdAttribute : Attribute
+    {
+        /// <summary>
+        /// Command Handler Attribute
+        /// </summary>
+        /// <param name="command">The first arg on which the processor reacts to</param>
+        public CmdAttribute(string command)
+        {
+            Command = command;
+        }
 
-    /// <summary>
-    /// Logs an error
-    /// </summary>
-    /// <param name="line"></param>
-    /// <returns></returns>
-    protected static int Error(string line) {
-      return Log(Color.Red, line);
+        /// <summary>
+        /// The Command (first arg), e.g.: "print" or "quit"
+        /// </summary>
+        public string Command { get; private set; }
     }
-  }
-
-  /// <summary>
-  /// The attribute for the commandhandler
-  /// used for recognition of the command
-  /// </summary>
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-  public class CmdAttribute : Attribute {
-    /// <summary>
-    /// Command Handler Attribute
-    /// </summary>
-    /// <param name="command">The first arg on which the processor reacts to</param>
-    public CmdAttribute(string command) {
-      Command = command;
-    }
-
-    /// <summary>
-    /// The Command (first arg), e.g.: "print" or "quit"
-    /// </summary>
-    public string Command { get; private set; }
-  }
 }

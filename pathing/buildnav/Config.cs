@@ -1,43 +1,49 @@
-﻿using System.IO;
-using CEM.Client;
+﻿using CEM.Client;
 using CEM.Utils;
+using System.IO;
 
-namespace CEM {
-  /// <summary>
-  /// Configuration class
-  /// </summary>
-  internal class Config {
-    public CEMConfig CEM { get; private set; }
-
-    public Config() {
-      CEM = new CEMConfig();
-    }
-
-    #region Save & Load
-
-    private static readonly Json _json = new Json {SerializeFieldNames = true, Pretty = true};
-
+namespace CEM
+{
     /// <summary>
-    /// Saves a json config file
+    /// Configuration class
     /// </summary>
-    /// <param name="file"></param>
-    public void Save(string file) {
-      File.WriteAllText(file, _json.ToJson(this));
+    internal class Config
+    {
+        public CEMConfig CEM { get; private set; }
+
+        public Config()
+        {
+            CEM = new CEMConfig();
+        }
+
+        #region Save & Load
+
+        private static readonly Json _json = new Json { SerializeFieldNames = true, Pretty = true };
+
+        /// <summary>
+        /// Saves a json config file
+        /// </summary>
+        /// <param name="file"></param>
+        public void Save(string file)
+        {
+            File.WriteAllText(file, _json.ToJson(this));
+        }
+
+        /// <summary>
+        /// Loads a config from file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static Config Load(string file)
+        {
+            return _json.ParseJson<Config>(File.ReadAllText(file));
+        }
+
+        #endregion
     }
 
-    /// <summary>
-    /// Loads a config from file
-    /// </summary>
-    /// <param name="file"></param>
-    /// <returns></returns>
-    public static Config Load(string file) {
-      return _json.ParseJson<Config>(File.ReadAllText(file));
+    internal class CEMConfig
+    {
+        public string GamePath;
     }
-
-    #endregion
-  }
-
-  internal class CEMConfig {
-    public string GamePath;
-  }
 }

@@ -19,30 +19,33 @@
 
 using System;
 
-namespace CEM.Core {
-  /// <summary>
-  /// CVar Attribute
-  /// Defines that a property is used as a C[onfig]Var[iable]
-  /// </summary>
-  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-  public class CVarAttribute : Attribute {
-    public CVarAttribute() {
-      ReadOnly = false;
+namespace CEM.Core
+{
+    /// <summary>
+    /// CVar Attribute
+    /// Defines that a property is used as a C[onfig]Var[iable]
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    public class CVarAttribute : Attribute
+    {
+        public CVarAttribute()
+        {
+            ReadOnly = false;
+        }
+
+        /// <summary>
+        /// Is the cvar readonly?
+        /// </summary>
+        public bool ReadOnly { get; set; }
+
+        /// <summary>
+        /// Name of the cvar, or null if property name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Default value
+        /// </summary>
+        public object Default { get; set; }
     }
-
-    /// <summary>
-    /// Is the cvar readonly?
-    /// </summary>
-    public bool ReadOnly { get; set; }
-
-    /// <summary>
-    /// Name of the cvar, or null if property name
-    /// </summary>
-    public string Name { get; set; }
-
-    /// <summary>
-    /// Default value
-    /// </summary>
-    public object Default { get; set; }
-  }
 }
